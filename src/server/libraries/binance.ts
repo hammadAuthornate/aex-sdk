@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import {
-  CancelReplaceMode,
   MainClient,
+  CancelReplaceMode,
   OrderSide,
   OrderType,
   ExchangeInfo,
@@ -344,6 +344,35 @@ export async function createBinanceCancelOrder({
     return result;
   } catch (error) {
     console.error("Error amending Binance order:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retrieves the status of an order from Binance.
+ *
+ * @param {Object} options - Order status retrieval options.
+ * @param {string | undefined} options.orderId - The order ID to retrieve the status for. Optional if quoteId is provided.
+ * @param {string | undefined} options.quoteId - The quote ID to retrieve the status for. Optional if orderId is provided.
+ * @returns {Promise<any>} - A promise that resolves to the order status.
+ * @throws {Error} - If an error occurs during the API call.
+ */
+export async function getBinanceOrderStatus({
+  orderId,
+  quoteId,
+}: {
+  orderId?: string;
+  quoteId?: string;
+}) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getOrderStatus({
+      orderId,
+      quoteId,
+    });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance order status:", error);
     throw error;
   }
 }
