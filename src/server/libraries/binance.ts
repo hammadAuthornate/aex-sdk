@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { MainClient, OrderSide, OrderType } from "binance";
+import { CancelReplaceMode, MainClient, OrderSide, OrderType } from "binance";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
     useTestnet: testnet,
     api_key: binanceApiKey,
     api_secret: binanceApiSecret,
-    baseUrl: testnet ? "https://testnet.binance.vision" : undefined,
+    baseUrl: testnet ? "https://testnet.binance.vision" : undefined, // https://api.binance.com
     recvWindow: 20000,
   });
   return client;
@@ -125,6 +125,20 @@ export async function getBinanceOpenOrders(symbol?: string) {
   }
 }
 
+export async function getBinanceTradeHistory(
+  symbol: string,
+  limit: number = 10
+) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getHistoricalTrades({ symbol, limit });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance Trade History:", error);
+    throw error;
+  }
+}
+
 export async function createBinanceOrder({
   side,
   symbol,
@@ -149,7 +163,62 @@ export async function createBinanceOrder({
     });
     return result;
   } catch (error) {
-    console.error("Error fetching Binance account:", error);
+    console.error("Error creating Binance order:", error);
+    throw error;
+  }
+}
+
+export async function createBinanceAmendOrder({
+  side,
+  symbol,
+  type,
+  cancelReplaceMode,
+  price,
+  quantity,
+}: {
+  side: OrderSide;
+  symbol: string;
+  type: OrderType;
+  cancelReplaceMode: CancelReplaceMode;
+  price?: number;
+  quantity?: number;
+}) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.replaceOrder({
+      symbol,
+      side,
+      type,
+      cancelReplaceMode,
+      price,
+      quantity,
+    });
+    return result;
+  } catch (error) {
+    console.error("Error amending Binance order:", error);
+    throw error;
+  }
+}
+
+export async function createBinanceCancelOrder({
+  symbol,
+  orderId,
+  origClientOrderId,
+}: {
+  symbol: string;
+  orderId?: number;
+  origClientOrderId?: string;
+}) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.cancelOrder({
+      symbol,
+      orderId,
+      origClientOrderId,
+    });
+    return result;
+  } catch (error) {
+    console.error("Error amending Binance order:", error);
     throw error;
   }
 }
