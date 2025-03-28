@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { MainClient } from "binance";
+import { MainClient, OrderSide, OrderType } from "binance";
 
 dotenv.config();
 
@@ -47,6 +47,20 @@ export async function getBinanceTicker(symbol: string) {
   }
 }
 
+export async function getBinanceTradingDayTicker(
+  symbol: string,
+  type?: "FULL" | "MINI"
+) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getTradingDayTicker({ symbol, type });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance ticker:", error);
+    throw error;
+  }
+}
+
 export async function getBinanceMarketDepth(
   symbol: string,
   limit: number = 10
@@ -68,6 +82,71 @@ export async function getBinanceAccount() {
   try {
     const binanceClient = await fetchClient({ testnet: true });
     const result = await binanceClient.getAccountInfo();
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance account:", error);
+    throw error;
+  }
+}
+
+export async function getBinanceDepositAddress(coin: string) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getDepositAddress({ coin });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance Deposit Address:", error);
+    throw error;
+  }
+}
+
+export async function getBinanceWithdrawHistory(
+  coin: string,
+  limit: number = 10
+) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getWithdrawHistory({ coin, limit });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance Withdraw History:", error);
+    throw error;
+  }
+}
+
+export async function getBinanceOpenOrders(symbol?: string) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.getOpenOrders({ symbol });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Binance Open Orders:", error);
+    throw error;
+  }
+}
+
+export async function createBinanceOrder({
+  side,
+  symbol,
+  type,
+  price,
+  quantity,
+}: {
+  side: OrderSide;
+  symbol: string;
+  type: OrderType;
+  price?: number;
+  quantity?: number;
+}) {
+  try {
+    const binanceClient = await fetchClient({ testnet: true });
+    const result = await binanceClient.testNewOrder({
+      side: side,
+      symbol,
+      type,
+      price,
+      quantity,
+    });
     return result;
   } catch (error) {
     console.error("Error fetching Binance account:", error);
