@@ -3,6 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import postcss from "rollup-plugin-postcss";
 import tailwindcss from "tailwindcss";
+import json from "@rollup/plugin-json";
 
 export default {
   input: "src/index.ts",
@@ -36,6 +37,24 @@ export default {
       modules: false,
       plugins: [tailwindcss],
     }),
+    json(),
   ],
-  external: ["react"],
+  external: [
+    "react",
+    "fs",
+    "path",
+    "os",
+    "crypto",
+    "util",
+    "stream",
+    "http",
+    "https",
+    "url",
+    "assert",
+    "zlib",
+    "events",
+    "net",
+    "tls",
+    "buffer",
+  ],
 };
