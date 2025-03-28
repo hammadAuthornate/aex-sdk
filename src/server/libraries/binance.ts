@@ -5,11 +5,11 @@ dotenv.config();
 
 async function fetchClient({ testnet = false }: { testnet?: boolean }) {
   const binanceApiKey = testnet
-    ? process.env.BINANCE_API_KEY
-    : process.env.BINANCE_TESTNET_API_KEY;
+    ? process.env.BINANCE_TESTNET_API_KEY
+    : process.env.BINANCE_API_KEY;
   const binanceApiSecret = testnet
-    ? process.env.BINANCE_API_SECRET
-    : process.env.BINANCE_TESTNET_API_SECRET;
+    ? process.env.BINANCE_TESTNET_API_SECRET
+    : process.env.BINANCE_API_SECRET;
 
   console.log("keys ", binanceApiKey, binanceApiSecret);
   if (!binanceApiKey || !binanceApiSecret) {
