@@ -148,7 +148,7 @@ export async function createBybitOrder(
   size: string,
   symbol: string,
   qty: string,
-  price?: string,
+  price?: string
 ) {
   try {
     const bybitClient = await fetchClient({ testnet: true });
@@ -157,9 +157,8 @@ export async function createBybitOrder(
       side,
       symbol,
       price,
-      category:'spot',
+      category: "spot",
       qty: qty,
-
     });
     return result;
   } catch (error) {
@@ -178,7 +177,7 @@ export async function cancelBybitOrder(
     const result = await bybitClient.cancelOrder({
       symbol,
       orderId,
-      category: 'spot'
+      category: "spot",
     });
     return result;
   } catch (error) {
@@ -187,22 +186,26 @@ export async function cancelBybitOrder(
   }
 }
 
-// export async function getBybitOrderStatus({
-//   orderId,
-//   clientOid,
-// }: {
-//   orderId?: string;
-//   clientOid?: string;
-// }) {
-//   try {
-//     const bybitClient = await fetchClient({ testnet: true });
-//     const result = await bybitClient.getSpotOrder({
-//       orderId,
-//       clientOid,
-//     });
-//     return result;
-//   } catch (error) {
-//     console.error("Error fetching Bitget order status:", error);
-//     throw error;
-//   }
-// }
+export async function getBybitOrderStatus({
+  symbol,
+  orderId,
+  clientOid,
+}: {
+  symbol: string;
+  orderId?: string;
+  clientOid?: string;
+}) {
+  try {
+    const bybitClient = await fetchClient({ testnet: true });
+    const result = await bybitClient.getActiveOrders({
+      orderId,
+      category: "spot",
+      openOnly: 1,
+      symbol,
+    });
+    return result;
+  } catch (error) {
+    console.error("Error fetching Bitget order status:", error);
+    throw error;
+  }
+}
