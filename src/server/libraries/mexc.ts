@@ -39,10 +39,16 @@ export async function getMexcExchangeInfo(symbol: string) {
   }
 }
 
+type MEXC_MARKET_DEPTH = {
+  lastUpdateId: number;
+  bids: Array<Array<number>>;
+  asks: Array<Array<number>>;
+  timestamp: number;
+};
 export async function getMexcMarketDepth(symbol: string, limit: number = 10) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.depth(symbol, {
+    const result: MEXC_MARKET_DEPTH = await mexcClient.depth(symbol, {
       limit,
     });
     return result;

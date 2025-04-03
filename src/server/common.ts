@@ -19,10 +19,13 @@ export async function getCommonTickers(
     case "mexc":
       return await MEXC.getMexcTicker(symbol);
     case "ALL":
-      const binanceResult = await BINANCE.getBinanceTicker(symbol);
-      const bitgetResult = await BITGET.getBitgetTicker(symbol);
-      const bybitResult = await BYBIT.getBybitTicker(symbol);
-      const mexcResult = await MEXC.getMexcTicker(symbol);
+      const [binanceResult, bitgetResult, bybitResult, mexcResult] =
+        await Promise.all([
+          BINANCE.getBinanceTicker(symbol),
+          BITGET.getBitgetTicker(symbol),
+          BYBIT.getBybitTicker(symbol),
+          MEXC.getMexcTicker(symbol),
+        ]);
 
       let results = [];
 
@@ -73,9 +76,63 @@ export async function getCommonTickers(
           exchange: "mexc",
         });
       }
-   
+
       return results;
 
+    default:
+      return null;
+  }
+}
+
+export async function getCommonOrderBook(
+  exchange: EXCHANGE_OPTION,
+  symbol: string
+) {
+  switch (exchange) {
+    case "binance":
+      return await BINANCE.getBinanceMarketDepth(symbol);
+    case "bitget":
+      return await BITGET.getBitgetMarketDepth(symbol);
+    case "bybit":
+      return await BYBIT.getBybitMarketDepth(symbol);
+    case "mexc":
+      return await MEXC.getMexcMarketDepth(symbol);
+    case "ALL":
+      const [binanceResult, bitgetResult, bybitResult, mexcResult] =
+        await Promise.all([
+          BINANCE.getBinanceMarketDepth(symbol),
+          BITGET.getBitgetMarketDepth(symbol),
+          BYBIT.getBybitMarketDepth(symbol),
+          MEXC.getMexcMarketDepth(symbol),
+        ]);
+
+      let results = [];
+
+      results.push({
+        exchange: "binance",
+        bids: binanceResult.bids,
+        asks: binanceResult.asks,
+      });
+
+      results.push({
+        exchange: "bybit",
+        bids: bybitResult.result.b,
+        asks: bybitResult.result.a,
+      });
+
+      results.push({
+        exchange: "bitget",
+        bids: bitgetResult.data.bids,
+        asks: bitgetResult.data.asks,
+      });
+
+      results.push({
+        exchange: "mexc",
+        bids: mexcResult.bids,
+        asks: mexcResult.asks,
+      });
+
+      return results;
     default:
       return null;
   }
