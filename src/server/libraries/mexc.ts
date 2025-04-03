@@ -12,7 +12,7 @@ async function fetchClient() {
   return client;
 }
 
-export async function getMexcTicker(symbol: string) {
+export async function getMexcTicker(symbol?: string) {
   try {
     const mexcClient = await fetchClient();
     const result = await mexcClient.tickerPrice(symbol);
@@ -125,7 +125,7 @@ export async function createMexcOrder(
 ) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.newOrderTest(symbol, side, orderType, {
+    const result = await mexcClient.newOrder(symbol, side, orderType, {
       quantity,
       price,
     });

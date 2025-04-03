@@ -1,6 +1,12 @@
 import * as MEXC from "../../server/libraries/mexc";
 
 describe("test Mexc library", () => {
+  it("tickers", async () => {
+    const ticker = await MEXC.getMexcTicker();
+    console.log("tickers ", ticker);
+    expect(ticker).not.toBeNull();
+  });
+
   it("ticker symbol", async () => {
     const ticker = await MEXC.getMexcTicker("BTCUSDT");
     console.log("ticker ", ticker);
@@ -43,7 +49,7 @@ describe("test Mexc library", () => {
     expect(account).not.toBeNull();
   });
 
-  it("create order", async () => {
+  test.skip("create order", async () => {
     const create = await MEXC.createMexcOrder(
       "BTCUSDT",
       "BUY",

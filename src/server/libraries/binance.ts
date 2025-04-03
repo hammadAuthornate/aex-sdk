@@ -74,7 +74,7 @@ export async function getSymbolList() {
  * @returns {Promise<SymbolPrice | SymbolPrice[]>} - A promise that resolves to the ticker price.
  * @throws {Error} - If an error occurs during the API call.
  */
-export async function getBinanceTicker(symbol: string) {
+export async function getBinanceTicker(symbol?: string) {
   try {
     const binanceClient = await fetchClient({ testnet: true });
     const result = await binanceClient.getSymbolPriceTicker({ symbol });

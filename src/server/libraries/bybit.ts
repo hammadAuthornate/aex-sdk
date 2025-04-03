@@ -25,7 +25,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
   return client;
 }
 
-export async function getBybitTicker(symbol: string) {
+export async function getBybitTicker(symbol?: string) {
   try {
     const bybitClient = await fetchClient({ testnet: true });
     const result = await bybitClient.getTickers({ symbol, category: "spot" });

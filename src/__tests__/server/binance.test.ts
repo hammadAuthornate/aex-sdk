@@ -1,6 +1,11 @@
 import * as BINANCE from "../../server/libraries/binance";
 
 describe("Binance get endpoints", () => {
+  it("should display coin tickers", async () => {
+    const res = await BINANCE.getBinanceTicker();
+    console.log("ressss ", res);
+  });
+
   it("should display coin details", async () => {
     const res = await BINANCE.getBinanceTicker("BTCUSDT");
     console.log("ressss ", res);
