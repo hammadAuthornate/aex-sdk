@@ -308,3 +308,25 @@ export async function getBitgetOrderStatus({
     throw error;
   }
 }
+
+
+
+// export async function getBitgetData({
+//   orderId,
+//   clientOid,
+// }: {
+//   orderId?: string;
+//   clientOid?: string;
+// }) {
+//   try {
+//     const bitgetClient = await fetchClient();
+//     const result = await bitgetClient.get({
+//       orderId,
+//       clientOid,
+//     });
+//     return result;
+//   } catch (error) {
+//     console.error("Error fetching Bitget order status:", error);
+//     throw error;
+//   }
+// }
