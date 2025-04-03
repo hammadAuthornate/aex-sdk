@@ -80,10 +80,7 @@ export async function getMexcWithdrawHistory(coin: string, limit: number = 10) {
   }
 }
 
-export async function getMexcOpenOrders(
-  symbol: string,
-  limit: number = 10
-) {
+export async function getMexcOpenOrders(symbol: string, limit: number = 10) {
   try {
     const mexcClient = await fetchClient();
     const result = await mexcClient.openOrders(symbol);
@@ -94,10 +91,7 @@ export async function getMexcOpenOrders(
   }
 }
 
-export async function getMexcTradeHistory(
-  symbol: string,
-  limit: number = 10
-) {
+export async function getMexcTradeHistory(symbol: string, limit: number = 10) {
   try {
     const mexcClient = await fetchClient();
     const result = await mexcClient.historicalTrades(symbol, { limit });
@@ -123,10 +117,9 @@ export async function getMexcTradeHistory(
 // }
 
 export async function createMexcOrder(
-  orderType: string,
-  side: string,
-  size: string,
   symbol: string,
+  side: string,
+  orderType: string,
   quantity: string,
   price?: string
 ) {
@@ -145,12 +138,15 @@ export async function createMexcOrder(
 
 export async function cancelMexcOrder(
   symbol: string,
-  clientOid?: string,
-  orderId?: string
+  orderId?: string,
+  origClientOrderId?: string
 ) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.cancelOrder(symbol, { orderId });
+    const result = await mexcClient.cancelOrder(symbol, {
+      orderId,
+      origClientOrderId,
+    });
     return result;
   } catch (error) {
     console.error("Error cancelling Mexc order:", error);

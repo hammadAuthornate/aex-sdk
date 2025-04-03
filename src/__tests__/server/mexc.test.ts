@@ -42,4 +42,22 @@ describe("test Mexc library", () => {
     console.log("account ", account);
     expect(account).not.toBeNull();
   });
+
+  it("create order", async () => {
+    const create = await MEXC.createMexcOrder(
+      "BTCUSDT",
+      "BUY",
+      "LIMIT",
+      "1",
+      "1"
+    );
+    console.log("create order ", create);
+    expect(create).not.toBeNull();
+  });
+
+  test.skip("cancel order", async () => {
+    const cancel = await MEXC.cancelMexcOrder("BTCUSDT");
+    console.log("cancel order ", cancel);
+    expect(cancel).not.toBeNull();
+  });
 });
