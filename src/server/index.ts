@@ -1,5 +1,5 @@
-export * from './serverFetch';
+export * from './serverFetch.js';
 
-export * from './libraries/bybit';
-export * from './libraries/bitget';
-export * from './libraries/binance';
+export * from './libraries/bybit.js';
+export * from './libraries/bitget.js';
+export * from './libraries/binance.js';

@@ -10,7 +10,7 @@ export default {
   output: [
     {
       file: "dist/index.js",
-      format: "cjs",
+      format: "es",
       sourcemap: true,
     },
     {
@@ -29,12 +29,12 @@ export default {
     },
   ],
   plugins: [
-    resolve(),
+    resolve({ extensions: [".js", ".ts", ".tsx"] }),
     commonjs(),
-    typescript(),
+    typescript({ tsconfig: "./tsconfig.json" }),
     postcss({
       extract: false,
-      modules: false,
+      modules: true,
       plugins: [tailwindcss],
     }),
     json(),
