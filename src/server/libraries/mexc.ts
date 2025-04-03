@@ -96,7 +96,6 @@ export async function getMexcOpenOrders(
 }
 
 export async function getMexcTradeHistory(
-  coin: string,
   symbol: string,
   limit: number = 10
 ) {
