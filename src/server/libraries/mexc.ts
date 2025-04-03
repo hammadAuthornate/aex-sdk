@@ -12,10 +12,15 @@ async function fetchClient() {
   return client;
 }
 
+type MEXC_TICKER_DATA = {
+  symbol: string;
+  price: string;
+};
 export async function getMexcTicker(symbol?: string) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.tickerPrice(symbol);
+    const result: MEXC_TICKER_DATA | MEXC_TICKER_DATA[] =
+      await mexcClient.tickerPrice(symbol);
     return result;
   } catch (error) {
     console.error("Error fetching Mexc ticker:", error);
