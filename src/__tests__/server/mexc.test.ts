@@ -24,4 +24,22 @@ describe("test Mexc library", () => {
     console.log("history ", history);
     expect(history).not.toBeNull();
   });
+
+  it("withdraw history", async () => {
+    const withdraw = await MEXC.getMexcWithdrawHistory("BTCUSDT");
+    console.log("withdraw ", withdraw);
+    expect(withdraw).not.toBeNull();
+  });
+
+  it("open orders", async () => {
+    const open = await MEXC.getMexcOpenOrders("BTCUSDT");
+    console.log("open ", open);
+    expect(open).not.toBeNull();
+  });
+
+  it("account", async () => {
+    const account = await MEXC.getMexcAccount();
+    console.log("account ", account);
+    expect(account).not.toBeNull();
+  });
 });
