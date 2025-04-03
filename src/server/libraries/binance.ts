@@ -85,6 +85,7 @@ export async function getBinanceTicker(symbol: string) {
   }
 }
 
+
 /**
  * Retrieves the 24-hour ticker for a given symbol from Binance.
  *
