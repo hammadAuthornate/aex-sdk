@@ -25,4 +25,3 @@ describe("test Mexc library", () => {
     expect(history).not.toBeNull();
   });
 });
-
