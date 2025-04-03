@@ -77,10 +77,9 @@ describe("Binance get endpoints", () => {
   it("should display coin details", async () => {
     const { getBinanceTicker } = require("./binance");
     const res = await getBinanceTicker();
-    // console.log("ressss ", res);
+    console.log("ressss ", res);
     expect(Array.isArray(res)).toBe(true);
     expect(res.length).toBeGreaterThan(0);
-
     // Check if a known symbol exists
     expect(res).toEqual(
       expect.arrayContaining([
@@ -97,7 +96,6 @@ describe("Binance get endpoints", () => {
       const { getBinanceAccount } = require("./binance");
       const res = await getBinanceAccount();
       console.log("Account Info:", res);
-
       // Example expectation if successful (you can tweak as per your API structure)
       expect(res).toHaveProperty("balances");
     } catch (error) {
@@ -110,7 +108,7 @@ describe("Binance get endpoints", () => {
   it("should fetch Binance market depth", async () => {
     const { getBinanceMarketDepth } = require("./binance");
     const res2 = await getBinanceMarketDepth("BTCUSDT", 5);
-    // console.log("ressss ", res2);
+    console.log("ressss ", res2);
     // expect(res2).toHaveProperty('symbol', 'BTCUSDT');
     // expect(res2).toHaveProperty('limit', 5);
   });
@@ -133,7 +131,6 @@ describe("Binance get endpoints", () => {
         quantity: 0.001,
       });
       console.log("Order Test Result:", res);
-
       expect(res).toHaveProperty("symbol");
     } catch (error) {
       console.error("Error testing new Binance order:", error);
@@ -146,7 +143,6 @@ describe("Binance get endpoints", () => {
       const { getBinanceOpenOrders } = require("./binance");
       const res = await getBinanceOpenOrders("BTCUSDT");
       console.log("Open Orders:", res);
-
       expect(Array.isArray(res)).toBe(true);
     } catch (error) {
       console.error("Error fetching open orders:", error);
@@ -159,7 +155,6 @@ describe("Binance get endpoints", () => {
       const { getBinanceWithdrawHistory } = require("./binance");
       const res = await getBinanceWithdrawHistory("BTC", 5);
       console.log("Withdraw History:", res);
-
       expect(res).toHaveProperty("withdrawList");
       expect(Array.isArray(res.withdrawList)).toBe(true);
     } catch (error) {
@@ -173,7 +168,6 @@ describe("Binance get endpoints", () => {
       const { getBinanceDepositAddress } = require("./binance");
       const res = await getBinanceDepositAddress("BTC");
       console.log("Deposit Address:", res);
-
       expect(res).toHaveProperty("address");
     } catch (error) {
       console.error("Error fetching deposit address:", error);
@@ -186,7 +180,6 @@ describe("Binance get endpoints", () => {
       const { getBinanceTradingDayTicker } = require("./binance");
       const res = await getBinanceTradingDayTicker("BTCUSDT");
       console.log("Ticker:", res);
-
       expect(res).toHaveProperty("symbol", "BTCUSDT");
     } catch (error) {
       console.error("Error fetching trading day ticker:", error);
