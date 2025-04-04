@@ -2,3 +2,7 @@ node_modules/
 dist/
 .env
 aex-sdk-1.0.0.tgz
+
+*storybook.log
+**/stories/*
+.storybook/
