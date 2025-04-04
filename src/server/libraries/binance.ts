@@ -16,6 +16,7 @@ import {
   RawTrade,
   ReplaceSpotOrderResultSuccess,
   CancelSpotOrderResult,
+  GetOrderStatusParams,
 } from "binance";
 
 dotenv.config();
@@ -28,15 +29,25 @@ dotenv.config();
  * @returns {Promise<MainClient>} - A promise that resolves to a MainClient instance.
  * @throws {Error} - If Binance API keys or secrets are missing in .env file.
  */
-async function fetchClient({ testnet = false }: { testnet?: boolean }) {
+async function fetchClient() {
+  const testnet: boolean =
+    process.env.BINANCE_USE_TESTNET === "true" ? true : false;
   const binanceApiKey = testnet
     ? process.env.BINANCE_TESTNET_API_KEY
     : process.env.BINANCE_API_KEY;
   const binanceApiSecret = testnet
     ? process.env.BINANCE_TESTNET_API_SECRET
     : process.env.BINANCE_API_SECRET;
+  const recvWindow = Number(process.env.RECV_WINDOW || 20000);
 
-  console.log("binance keys ", binanceApiKey, binanceApiSecret);
+  console.log(
+    "binance keys  testnet: ",
+    testnet,
+    " key: ",
+    binanceApiKey?.slice(0, 5)?.concat("..."),
+    " secret: ",
+    binanceApiSecret?.slice(0, 5)?.concat("...")
+  );
   if (!binanceApiKey || !binanceApiSecret) {
     throw new Error("Binance API Keys or secrets are missing in .env file");
   }
@@ -45,7 +56,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
     api_key: binanceApiKey,
     api_secret: binanceApiSecret,
     baseUrl: testnet ? "https://testnet.binance.vision" : undefined, // https://api.binance.com
-    recvWindow: 20000,
+    recvWindow: recvWindow,
   });
   return client;
 }
@@ -58,7 +69,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
  */
 export async function getSymbolList() {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getExchangeInfo();
     return result;
   } catch (error) {
@@ -76,7 +87,7 @@ export async function getSymbolList() {
  */
 export async function getBinanceTicker(symbol?: string) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getSymbolPriceTicker({ symbol });
     return result;
   } catch (error) {
@@ -84,7 +95,6 @@ export async function getBinanceTicker(symbol?: string) {
     throw error;
   }
 }
-
 
 /**
  * Retrieves the 24-hour ticker for a given symbol from Binance.
@@ -99,7 +109,7 @@ export async function getBinanceTradingDayTicker(
   type?: "FULL" | "MINI"
 ) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getTradingDayTicker({ symbol, type });
     return result;
   } catch (error) {
@@ -121,7 +131,7 @@ export async function getBinanceMarketDepth(
   limit: number = 10
 ) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getOrderBook({
       symbol,
       limit: limit as any,
@@ -141,7 +151,7 @@ export async function getBinanceMarketDepth(
  */
 export async function getBinanceAccount() {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getAccountInfo();
     return result;
   } catch (error) {
@@ -159,7 +169,7 @@ export async function getBinanceAccount() {
  */
 export async function getBinanceDepositAddress(coin: string) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getDepositAddress({ coin });
     return result;
   } catch (error) {
@@ -181,7 +191,7 @@ export async function getBinanceWithdrawHistory(
   limit: number = 10
 ) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getWithdrawHistory({ coin, limit });
     return result;
   } catch (error) {
@@ -199,7 +209,7 @@ export async function getBinanceWithdrawHistory(
  */
 export async function getBinanceOpenOrders(symbol?: string) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getOpenOrders({ symbol });
     return result;
   } catch (error) {
@@ -221,7 +231,7 @@ export async function getBinanceTradeHistory(
   limit: number = 10
 ) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getHistoricalTrades({ symbol, limit });
     return result;
   } catch (error) {
@@ -256,7 +266,7 @@ export async function createBinanceOrder({
   quantity?: number;
 }) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.testNewOrder({
       side: side,
       symbol,
@@ -300,7 +310,7 @@ export async function createBinanceAmendOrder({
   quantity?: number;
 }) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.replaceOrder({
       symbol,
       side,
@@ -336,7 +346,7 @@ export async function createBinanceCancelOrder({
   origClientOrderId?: string;
 }) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.cancelOrder({
       symbol,
       orderId,
@@ -361,19 +371,37 @@ export async function createBinanceCancelOrder({
 export async function getBinanceOrderStatus({
   orderId,
   quoteId,
+  options,
 }: {
   orderId?: string;
   quoteId?: string;
+  options?: Omit<GetOrderStatusParams, "orderId">;
 }) {
   try {
-    const binanceClient = await fetchClient({ testnet: true });
+    const binanceClient = await fetchClient();
     const result = await binanceClient.getOrderStatus({
       orderId,
       quoteId,
+      ...options,
     });
     return result;
   } catch (error) {
     console.error("Error fetching Binance order status:", error);
     throw error;
   }
+}
+
+export function getBinanceOAuthRequestUrl(
+  redirect_uri: string,
+  scope?: string,
+  state?: string
+) {
+  const BINANCE_CLIENT_ID = process.env.BINANCE_CLIENT_ID;
+  if (!BINANCE_CLIENT_ID) {
+    throw Error("Binance client ID not provided.");
+  }
+  const SCOPES = scope || "user:openId,create:apikey";
+  const STATE = state || "123456789";
+  const url = `https://accounts.binance.com/en/oauth/authorize?response_type=code&client_id=${BINANCE_CLIENT_ID}&redirect_uri=${redirect_uri}&state=${STATE}&scope=${SCOPES}`;
+  return url;
 }

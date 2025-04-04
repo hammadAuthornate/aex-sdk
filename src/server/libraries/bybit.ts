@@ -3,15 +3,25 @@ import { RestClientV5 } from "bybit-api";
 
 dotenv.config();
 
-async function fetchClient({ testnet = false }: { testnet?: boolean }) {
+async function fetchClient() {
+  const testnet: boolean =
+    process.env.BYBIT_USE_TESTNET === "true" ? true : false;
   const bybitApiKey = testnet
     ? process.env.BYBIT_TESTNET_API_KEY
     : process.env.BYBIT_API_KEY;
   const bybitApiSecret = testnet
     ? process.env.BYBIT_TESTNET_API_SECRET
     : process.env.BYBIT_API_SECRET;
+  const recvWindow = Number(process.env.RECV_WINDOW || 20000);
 
-  console.log("bybit keys ", bybitApiKey, bybitApiSecret);
+  console.log(
+    "bybit keys  testnet: ",
+    testnet,
+    " key: ",
+    bybitApiKey?.slice(0, 5)?.concat("..."),
+    " secret: ",
+    bybitApiSecret?.slice(0, 5)?.concat("...")
+  );
   if (!bybitApiKey || !bybitApiSecret) {
     throw new Error("Bybit API Keys or secrets are missing in .env file");
   }
@@ -19,7 +29,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
     testnet: testnet,
     key: bybitApiKey,
     secret: bybitApiSecret,
-    recv_window: 20000,
+    recv_window: recvWindow,
     baseUrl: testnet ? "https://api-testnet.bybit.com" : undefined,
   });
   return client;
@@ -27,7 +37,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
 
 export async function getBybitTicker(symbol?: string) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getTickers({ symbol, category: "spot" });
     return result;
   } catch (error) {
@@ -38,7 +48,7 @@ export async function getBybitTicker(symbol?: string) {
 
 export async function getBybitMarketDepth(symbol: string, limit: number = 10) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getOrderbook({
       symbol,
       category: "spot",
@@ -53,7 +63,7 @@ export async function getBybitMarketDepth(symbol: string, limit: number = 10) {
 
 export async function getBybitAccount() {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getAccountInfo();
     return result;
   } catch (error) {
@@ -64,7 +74,7 @@ export async function getBybitAccount() {
 
 export async function getBybitDepositAddress(coin: string, size: string) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getMasterDepositAddress(coin);
     return result;
   } catch (error) {
@@ -78,7 +88,7 @@ export async function getBybitWithdrawHistory(
   limit: number = 10
 ) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getWithdrawalRecords({ coin, limit });
     return result;
   } catch (error) {
@@ -87,12 +97,9 @@ export async function getBybitWithdrawHistory(
   }
 }
 
-export async function getBybitOpenOrders(
-  symbol: string,
-  limit: number = 10
-) {
+export async function getBybitOpenOrders(symbol: string, limit: number = 10) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getActiveOrders({
       category: "option",
       symbol,
@@ -106,12 +113,9 @@ export async function getBybitOpenOrders(
   }
 }
 
-export async function getBybitTradeHistory(
-  symbol: string,
-  limit: number = 10
-) {
+export async function getBybitTradeHistory(symbol: string, limit: number = 10) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getPublicTradingHistory({
       category: "option",
       symbol,
@@ -126,7 +130,7 @@ export async function getBybitTradeHistory(
 
 export async function getBybitAccountBalance(coin?: string) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getWalletBalance({
       accountType: "SPOT",
       coin,
@@ -147,7 +151,7 @@ export async function createBybitOrder(
   price?: string
 ) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.submitOrder({
       orderType,
       side,
@@ -169,7 +173,7 @@ export async function cancelBybitOrder(
   orderId?: string
 ) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.cancelOrder({
       symbol,
       orderId,
@@ -192,7 +196,7 @@ export async function getBybitOrderStatus({
   clientOid?: string;
 }) {
   try {
-    const bybitClient = await fetchClient({ testnet: true });
+    const bybitClient = await fetchClient();
     const result = await bybitClient.getActiveOrders({
       orderId,
       category: "spot",

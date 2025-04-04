@@ -6,12 +6,16 @@ dotenv.config();
 async function fetchClient() {
   const MEXC_API_KEY = process.env.MEXC_API_KEY;
   const MEXC_API_SECRET = process.env.MEXC_API_SECRET;
-  console.log("mexc keys ", MEXC_API_KEY, MEXC_API_SECRET);
+  console.log(
+    "mexc keys   key: ",
+    MEXC_API_KEY?.slice(0, 5)?.concat("..."),
+    " secret: ",
+    MEXC_API_SECRET?.slice(0, 5)?.concat("...")
+  );
   if (!MEXC_API_KEY || !MEXC_API_SECRET) {
     throw new Error("Mexc API Keys or secrets are missing in .env file");
   }
   const client = new Mexc.Spot(MEXC_API_KEY, MEXC_API_SECRET);
-  console.log("mexc client ", client);
   return client;
 }
 

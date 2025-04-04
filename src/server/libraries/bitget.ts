@@ -27,8 +27,14 @@ async function fetchClient() {
   const bitgetApiKey = process.env.BITGET_API_KEY;
   const bitgetApiSecret = process.env.BITGET_API_SECRET;
   const bitgetApiPass = process.env.BITGET_API_PASS;
+  const recvWindow = Number(process.env.RECV_WINDOW || 20000);
 
-  console.log("bitget keys ", bitgetApiKey, bitgetApiSecret);
+  console.log(
+    "bitget keys   key: ",
+    bitgetApiKey?.slice(0, 5)?.concat("..."),
+    " secret: ",
+    bitgetApiSecret?.slice(0, 5)?.concat("...")
+  );
   if (!bitgetApiKey || !bitgetApiSecret) {
     throw new Error("Bitget API Keys or secrets are missing in .env file");
   }
@@ -36,7 +42,7 @@ async function fetchClient() {
     apiKey: bitgetApiKey,
     apiSecret: bitgetApiSecret,
     apiPass: bitgetApiPass,
-    recvWindow: 20000,
+    recvWindow: recvWindow,
   });
   return client;
 }
@@ -308,8 +314,6 @@ export async function getBitgetOrderStatus({
     throw error;
   }
 }
-
-
 
 // export async function getBitgetData({
 //   orderId,
