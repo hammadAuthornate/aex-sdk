@@ -11,7 +11,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
     ? process.env.BYBIT_TESTNET_API_SECRET
     : process.env.BYBIT_API_SECRET;
 
-  console.log("keys ", bybitApiKey, bybitApiSecret);
+  console.log("bybit keys ", bybitApiKey, bybitApiSecret);
   if (!bybitApiKey || !bybitApiSecret) {
     throw new Error("Bybit API Keys or secrets are missing in .env file");
   }
@@ -88,7 +88,6 @@ export async function getBybitWithdrawHistory(
 }
 
 export async function getBybitOpenOrders(
-  coin: string,
   symbol: string,
   limit: number = 10
 ) {
@@ -96,7 +95,6 @@ export async function getBybitOpenOrders(
     const bybitClient = await fetchClient({ testnet: true });
     const result = await bybitClient.getActiveOrders({
       category: "option",
-      baseCoin: coin,
       symbol,
       limit,
       openOnly: 1,
@@ -109,7 +107,6 @@ export async function getBybitOpenOrders(
 }
 
 export async function getBybitTradeHistory(
-  coin: string,
   symbol: string,
   limit: number = 10
 ) {
@@ -117,7 +114,6 @@ export async function getBybitTradeHistory(
     const bybitClient = await fetchClient({ testnet: true });
     const result = await bybitClient.getPublicTradingHistory({
       category: "option",
-      baseCoin: coin,
       symbol,
       limit,
     });

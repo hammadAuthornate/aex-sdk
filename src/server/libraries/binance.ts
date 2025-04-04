@@ -36,7 +36,7 @@ async function fetchClient({ testnet = false }: { testnet?: boolean }) {
     ? process.env.BINANCE_TESTNET_API_SECRET
     : process.env.BINANCE_API_SECRET;
 
-  console.log("keys ", binanceApiKey, binanceApiSecret);
+  console.log("binance keys ", binanceApiKey, binanceApiSecret);
   if (!binanceApiKey || !binanceApiSecret) {
     throw new Error("Binance API Keys or secrets are missing in .env file");
   }

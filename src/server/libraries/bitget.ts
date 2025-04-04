@@ -28,7 +28,7 @@ async function fetchClient() {
   const bitgetApiSecret = process.env.BITGET_API_SECRET;
   const bitgetApiPass = process.env.BITGET_API_PASS;
 
-  console.log("keys ", bitgetApiKey, bitgetApiSecret);
+  console.log("bitget keys ", bitgetApiKey, bitgetApiSecret);
   if (!bitgetApiKey || !bitgetApiSecret) {
     throw new Error("Bitget API Keys or secrets are missing in .env file");
   }

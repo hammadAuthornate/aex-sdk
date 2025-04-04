@@ -1,4 +1,4 @@
-import * as Bitget from "../../server/libraries/bitget";
+import * as Bitget from "../../../server/libraries/bitget";
 
 describe("getBitgetData", () => {
   it("test", async () => {

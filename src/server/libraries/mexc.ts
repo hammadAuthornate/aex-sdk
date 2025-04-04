@@ -4,10 +4,13 @@ import * as Mexc from "mexc-api-sdk";
 dotenv.config();
 
 async function fetchClient() {
-  const client = new Mexc.Spot(
-    process.env.MEXC_API_KEY,
-    process.env.MEXC_API_SECRET
-  );
+  const MEXC_API_KEY = process.env.MEXC_API_KEY;
+  const MEXC_API_SECRET = process.env.MEXC_API_SECRET;
+  console.log("mexc keys ", MEXC_API_KEY, MEXC_API_SECRET);
+  if (!MEXC_API_KEY || !MEXC_API_SECRET) {
+    throw new Error("Mexc API Keys or secrets are missing in .env file");
+  }
+  const client = new Mexc.Spot(MEXC_API_KEY, MEXC_API_SECRET);
   console.log("mexc client ", client);
   return client;
 }
@@ -91,10 +94,30 @@ export async function getMexcWithdrawHistory(coin: string, limit: number = 10) {
   }
 }
 
-export async function getMexcOpenOrders(symbol: string, limit: number = 10) {
+type MEXC_ORDER = {
+  symbol: string;
+  orderId: number;
+  orderListId: number;
+  clientOrderId: string;
+  price: string;
+  origQty: string;
+  executedQty: string;
+  cummulativeQuoteQty: string;
+  status: string;
+  timeInForce: string;
+  type: string;
+  side: string;
+  stopPrice: string;
+  icebergQty: string;
+  time: number;
+  updateTime: number;
+  isWorking: boolean;
+  origQuoteOrderQty: string;
+};
+export async function getMexcOpenOrders(symbol: string) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.openOrders(symbol);
+    const result: MEXC_ORDER[] = await mexcClient.openOrders(symbol);
     return result;
   } catch (error) {
     console.error("Error fetching Mexc Open Orders:", error);
@@ -102,10 +125,22 @@ export async function getMexcOpenOrders(symbol: string, limit: number = 10) {
   }
 }
 
+type MEXC_HISTORY = {
+  id: string;
+  price: string;
+  qty: string;
+  quoteQty: string;
+  time: number;
+  isBuyerMaker: boolean;
+  isBestMatch: boolean;
+  tradeType: "BID" | "ASK" | string;
+};
 export async function getMexcTradeHistory(symbol: string, limit: number = 10) {
   try {
     const mexcClient = await fetchClient();
-    const result = await mexcClient.historicalTrades(symbol, { limit });
+    const result: MEXC_HISTORY[] = await mexcClient.historicalTrades(symbol, {
+      limit,
+    });
     return result;
   } catch (error) {
     console.error("Error fetching Mexc Trade History:", error);

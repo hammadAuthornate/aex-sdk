@@ -1,4 +1,4 @@
-import * as BINANCE from "../../server/libraries/binance";
+import * as BINANCE from "../../../server/libraries/binance";
 
 describe("Binance get endpoints", () => {
   it("should display coin tickers", async () => {

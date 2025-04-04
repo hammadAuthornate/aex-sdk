@@ -1,4 +1,4 @@
-import * as Bybit from "../../server/libraries/bybit";
+import * as Bybit from "../../../server/libraries/bybit";
 
 describe("get Bybit Data", () => {
   it("test", async () => {
@@ -35,7 +35,7 @@ describe("get Bybit Data", () => {
 
   it("should fetch Bybit Open Orders", async () => {
     try {
-      const res = await Bybit.getBybitOpenOrders("BTCUSDT", "BTC");
+      const res = await Bybit.getBybitOpenOrders("BTCUSDT");
       console.log("res", res);
     } catch (error) {
       console.error("Test failed to fetch Bybit Open Orders:", error);
@@ -62,7 +62,7 @@ describe("get Bybit Data", () => {
 
   it("should fetch Bybit Trade History", async () => {
     try {
-      const res = await Bybit.getBybitTradeHistory("BTCUSDT", "BTCUSDT");
+      const res = await Bybit.getBybitTradeHistory("BTCUSDT");
       console.log("res", res);
     } catch (error) {
       console.error("Test failed to fetch Bybit Trade History:", error);

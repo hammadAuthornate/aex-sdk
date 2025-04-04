@@ -1,4 +1,4 @@
-import * as MEXC from "../../server/libraries/mexc";
+import * as MEXC from "../../../server/libraries/mexc";
 
 describe("test Mexc library", () => {
   it("tickers", async () => {
