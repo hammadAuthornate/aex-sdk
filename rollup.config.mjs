@@ -6,7 +6,10 @@ import postcss from "rollup-plugin-postcss";
 import tailwindcss from "tailwindcss";
 
 const commonPlugins = [
-  nodeResolve({ extensions: [".js", ".ts", ".tsx"] }),
+  nodeResolve({
+    extensions: [".js", ".ts", ".tsx"],
+    preferBuiltins: true,
+  }),
   commonjs(),
   json(),
   postcss({
@@ -16,6 +19,13 @@ const commonPlugins = [
   }),
 ];
 
+const commonExternal = ["react"];
+
+const onwarn = (warning, warn) => {
+  if (warning.code === "CIRCULAR_DEPENDENCY") return;
+  warn(warning);
+};
+
 export default [
   {
     input: "src/index.ts",
@@ -23,35 +33,43 @@ export default [
     plugins: [
       typescript({
         declaration: true,
+        declarationMap: true,
         declarationDir: "dist/types",
         rootDir: "src",
       }),
       ...commonPlugins,
     ],
-    external: ["react"],
+    external: commonExternal,
+    onwarn,
   },
   {
     input: "src/client/index.ts",
     output: [{ file: "dist/client/index.js", format: "cjs", sourcemap: true }],
-    plugins: [typescript({ declaration: false }), ...commonPlugins],
-    external: ["react"],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    external: commonExternal,
+    onwarn,
   },
   {
     input: "src/client/components/index.ts",
     output: [
-      {
-        file: "dist/client/components/index.js",
-        format: "es",
-        sourcemap: true,
-      },
-      {
-        file: "dist/client/components/index.cjs",
-        format: "cjs",
-        sourcemap: true,
-      },
+      { file: "dist/client/components/index.js", format: "es", sourcemap: true },
+      { file: "dist/client/components/index.cjs", format: "cjs", sourcemap: true },
     ],
-    plugins: [typescript({ declaration: false }), ...commonPlugins],
-    external: ["react"],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    external: commonExternal,
+    onwarn,
   },
   {
     input: "src/server/index.ts",
@@ -59,22 +77,28 @@ export default [
       { file: "dist/server/index.js", format: "es", sourcemap: true },
       { file: "dist/server/index.cjs", format: "cjs", sourcemap: true },
     ],
-    plugins: [typescript({ declaration: false }), ...commonPlugins],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    onwarn,
   },
   {
     input: "src/server/libraries/binance.ts",
     output: [
-      {
-        file: "dist/server/libraries/binance.js",
-        format: "es",
-        sourcemap: true,
-      },
-      {
-        file: "dist/server/libraries/binance.cjs",
-        format: "cjs",
-        sourcemap: true,
-      },
+      { file: "dist/server/libraries/binance.js", format: "es", sourcemap: true },
+      { file: "dist/server/libraries/binance.cjs", format: "cjs", sourcemap: true },
     ],
-    plugins: [typescript({ declaration: false }), ...commonPlugins],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    onwarn,
   },
 ];
