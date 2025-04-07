@@ -175,3 +175,35 @@ describe("should test the common trade history function", () => {
     expect(commonResults).not.toBeNull();
   });
 });
+
+describe("should test the common account info function", () => {
+  it("should get binance account info", async () => {
+    const binanceResults = await COMMON.getCommonAccountInfo("binance");
+    console.log("binanceResults account info", binanceResults);
+    expect(binanceResults).not.toBeNull();
+  });
+
+  it("should get bybit account info", async () => {
+    const bybitResults = await COMMON.getCommonAccountInfo("bybit");
+    console.log("bybitResults account info", bybitResults);
+    expect(bybitResults).not.toBeNull();
+  });
+
+  it("should get bitget account info", async () => {
+    const bitgetResults = await COMMON.getCommonAccountInfo("bitget");
+    console.log("bitgetResults account info", bitgetResults);
+    expect(bitgetResults).not.toBeNull();
+  });
+
+  it("should get mexc account info", async () => {
+    const mexcResults = await COMMON.getCommonAccountInfo("mexc");
+    console.log("mexcResults account info", mexcResults);
+    expect(mexcResults).not.toBeNull();
+  });
+
+  it("should get common account info", async () => {
+    const commonResults = await COMMON.getCommonAccountInfo("ALL");
+    console.log("commonResults account info", commonResults);
+    expect(commonResults).not.toBeNull();
+  });
+});

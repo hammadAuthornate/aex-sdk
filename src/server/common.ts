@@ -319,3 +319,45 @@ export async function getCommonTradeHistory(
       return null;
   }
 }
+
+export async function getCommonAccountInfo(exchange: EXCHANGE_OPTION) {
+  switch (exchange) {
+    case "binance":
+      return await BINANCE.getBinanceAccount();
+    case "bitget":
+      return await BITGET.getBitgetAccount();
+    case "bybit":
+      return await BYBIT.getBybitAccount();
+    case "mexc":
+      return await MEXC.getMexcAccount();
+    case "ALL":
+      const [binanceResult, bitgetResult, bybitResult, mexcResult] =
+        await Promise.allSettled([
+          BINANCE.getBinanceAccount(),
+          BITGET.getBitgetAccount(),
+          BYBIT.getBybitAccount(),
+          MEXC.getMexcAccount(),
+        ]);
+
+      let results: any = {};
+      if (binanceResult.status === "fulfilled" && binanceResult?.value) {
+        results.binance = binanceResult.value;
+      }
+
+      if (bitgetResult.status === "fulfilled" && bitgetResult?.value?.data) {
+        results.bitget = bitgetResult.value;
+      }
+
+      if (bybitResult.status === "fulfilled" && bybitResult?.value?.result) {
+        results.bybit = bybitResult.value;
+      }
+
+      if (mexcResult?.status === "fulfilled" && mexcResult?.value) {
+        results.mexc = mexcResult.value;
+      }
+
+      return results;
+    default:
+      return null;
+  }
+}
