@@ -1,54 +1,81 @@
 {
-    "name": "aex-sdk",
-    "version": "1.0.0",
-    "description": "A TypeScript SDK with client and server routes.",
-    "type": "module",
-    "main": "dist/index.js",
-    "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "build": "rollup -c",
-        "dev": "rollup -c -w",
-        "test": "jest",
-        "prepare": "npm run build"
+  "name": "aex-sdk",
+  "version": "1.0.0",
+  "description": "A TypeScript SDK with client and server routes.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/types/index.d.ts"
     },
-    "keywords": [
-        "typescript",
-        "sdk",
-        "client",
-        "server",
-        "tailwind"
-    ],
-    "author": "Your Name",
-    "license": "MIT",
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^28.0.3",
-        "@rollup/plugin-json": "^6.1.0",
-        "@rollup/plugin-node-resolve": "^16.0.1",
-        "@rollup/plugin-typescript": "^12.1.2",
-        "@types/jest": "^29.5.14",
-        "@types/node": "^22.14.0",
-        "@types/react": "^19.1.0",
-        "jest": "^29.7.0",
-        "postcss": "^8.5.3",
-        "rollup": "^4.39.0",
-        "rollup-plugin-postcss": "^4.0.2",
-        "tailwindcss": "^4.1.2",
-        "ts-jest": "^29.3.1",
-        "tslib": "^2.8.1",
-        "typescript": "^5.8.2"
+    "./client": {
+      "require": "./dist/client/index.js",
+      "import": "./dist/client/index.js",
+      "types": "./dist/types/client/index.d.ts"
     },
-    "peerDependencies": {
-        "react": "^17.0.0 || ^18.0.0 || ^19.0.0"
+    "./client/components": {
+      "require": "./dist/client/components/index.cjs",
+      "import": "./dist/client/components/index.js",
+      "types": "./dist/types/client/components/index.d.ts"
     },
-    "files": [
-        "dist"
-    ],
-    "dependencies": {
-        "binance": "^2.15.16",
-        "bitget-api": "^2.3.5",
-        "bybit-api": "^4.1.1",
-        "dotenv": "^16.4.7",
-        "mexc-api-sdk": "^1.0.3"
+    "./server": {
+      "require": "./dist/server/index.cjs",
+      "import": "./dist/server/index.js",
+      "types": "./dist/types/server/index.d.ts"
+    },
+    "./server/libraries/binance": {
+      "require": "./dist/server/libraries/binance.cjs",
+      "import": "./dist/server/libraries/binance.js",
+      "types": "./dist/types/server/libraries/binance.d.ts"
     }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "typescript",
+    "sdk",
+    "client",
+    "server",
+    "tailwind"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "jest": "^29.7.0",
+    "postcss": "^8.5.3",
+    "rollup": "^4.39.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tailwindcss": "^4.1.2",
+    "ts-jest": "^29.3.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "binance": "^2.15.16",
+    "bitget-api": "^2.3.5",
+    "bybit-api": "^4.1.1",
+    "dotenv": "^16.4.7",
+    "mexc-api-sdk": "^1.0.3"
+  }
 }
