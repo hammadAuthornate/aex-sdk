@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj, StoryFn } from '@storybook/react';
-import Table from './SymbolsList'; // Assuming the path is correct
+import Table from '../../client/components/SymbolsList'; // Assuming the path is correct
 
 
 // Define the meta configuration for the Table component

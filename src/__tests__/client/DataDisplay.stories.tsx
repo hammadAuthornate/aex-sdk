@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { DataDisplay } from './DataDisplay';
+import { DataDisplay } from '../../client/components/DataDisplay';
 
 
 // Define the meta configuration for the DataDisplay component
