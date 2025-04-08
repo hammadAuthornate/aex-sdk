@@ -59,7 +59,7 @@ export default [
     input: "src/client/components/index.ts",
     output: [
       { file: "dist/client/components/index.js", format: "es", sourcemap: true },
-      { file: "dist/client/components/index.cjs", format: "cjs", sourcemap: true },
+      { file: "dist/client/components/index.cjs", format: "cjs", sourcemap: true, },
     ],
     plugins: [
       typescript({
@@ -88,9 +88,53 @@ export default [
   },
   {
     input: "src/server/libraries/binance.ts",
+    output: [{ file: "dist/server/libraries/binance.js", format: "es", sourcemap: true, },
+    { file: "dist/server/libraries/binance.cjs", format: "cjs", sourcemap: true, },
+    ],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    onwarn,
+  },
+  {
+    input: "src/server/libraries/bitget.ts",
     output: [
-      { file: "dist/server/libraries/binance.js", format: "es", sourcemap: true },
-      { file: "dist/server/libraries/binance.cjs", format: "cjs", sourcemap: true },
+      { file: "dist/server/libraries/bitget.js", format: "es", sourcemap: true, },
+      { file: "dist/server/libraries/bitget.cjs", format: "cjs", sourcemap: true, },
+    ],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    onwarn,
+  },
+  {
+    input: "src/server/libraries/bybit.ts",
+    output: [
+      { file: "dist/server/libraries/bybit.js", format: "es", sourcemap: true, },
+      { file: "dist/server/libraries/bybit.cjs", format: "cjs", sourcemap: true, },
+    ],
+    plugins: [
+      typescript({
+        declaration: false,
+        declarationMap: false,
+      }),
+      ...commonPlugins,
+    ],
+    onwarn,
+  },
+  {
+    input: "src/server/libraries/mexc.ts",
+    output: [
+      { file: "dist/server/libraries/mexc.js", format: "es", sourcemap: true, },
+      { file: "dist/server/libraries/mexc.cjs", format: "cjs", sourcemap: true, },
     ],
     plugins: [
       typescript({
