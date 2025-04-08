@@ -4,8 +4,16 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import postcss from "rollup-plugin-postcss";
 import tailwindcss from "tailwindcss";
+import url from "@rollup/plugin-url"; // <-- you forgot to import this
+
 
 const commonPlugins = [
+  url({
+    include: ['**/*.svg', '**/*.png', '**/*.jpg'],
+    limit: 0,
+    emitFiles: true,
+    fileName: '[dirname][hash][extname]',
+  }),
   nodeResolve({
     extensions: [".js", ".ts", ".tsx"],
     preferBuiltins: true,
@@ -18,6 +26,7 @@ const commonPlugins = [
     plugins: [tailwindcss],
   }),
 ];
+
 
 const commonExternal = ["react"];
 
@@ -36,6 +45,11 @@ export default [
         declarationMap: true,
         declarationDir: "dist/types",
         rootDir: "src",
+      }),
+      url({
+        include: ['**/*.svg', '**/*.png', '**/*.jpg'],
+        limit: 0, // or set a size limit to inline small files
+        emitFiles: true
       }),
       ...commonPlugins,
     ],
