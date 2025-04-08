@@ -1,4 +1,11 @@
 import React from 'react';
+import binanceIcon from '../../icons/binance.svg';
+import bitGetIcon from '../../icons/bitget.svg';
+import bybit from "../../icons/bybit.svg";
+import mexc from "../../icons/mexc.svg";
+
+
+
 
 export default function AuthPopup() {
   return (
@@ -8,7 +15,7 @@ export default function AuthPopup() {
         <div className="flex justify-between items-center px-4 py-2 m-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-500">
           <div>
             <img
-              src="/icons/binance.svg"
+              src={binanceIcon}
               alt="Binance"
               className="w-5 h-5 inline-block mr-2"
             />
@@ -19,7 +26,7 @@ export default function AuthPopup() {
         <div className="flex justify-between items-center px-4 py-2 m-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-500">
           <div>
             <img
-              src="/icons/bitget.svg"
+              src={bitGetIcon}
               alt="Bitget"
               className="w-5 h-5 inline-block mr-2"
             />
@@ -30,7 +37,7 @@ export default function AuthPopup() {
         <div className="flex justify-between items-center px-4 py-2 m-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-500">
           <div>
             <img
-              src="/icons/bybit.svg"
+              src={bybit}
               alt="bybit"
               className="w-5 h-5 inline-block mr-2"
             />
@@ -41,7 +48,7 @@ export default function AuthPopup() {
         <div className="flex justify-between items-center px-4 py-2 m-2 rounded-xl border border-gray-200 bg-white text-sm text-gray-500">
           <div>
             <img
-              src="/icons/mexc.svg"
+              src={mexc}
               alt="MEXC"
               className="w-5 h-5 inline-block mr-2"
             />
