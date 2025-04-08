@@ -6,4 +6,4 @@ aex-sdk-*.tgz
 *storybook.log
 **/stories/*
 # .storybook/
-**/coverage/*
+coverage/
